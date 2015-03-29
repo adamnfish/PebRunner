@@ -1,0 +1,31 @@
+{
+  "uuid": "173ac167-49df-43e5-90c0-d8b07ed1564b",
+  "shortName": "PebRrunner",
+  "longName": "Pebble Netrunner",
+  "companyName": "adamnfish",
+  "versionCode": 1,
+  "versionLabel": "0.1",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt"],
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+      {
+        "type": "font",
+        "name": "NETRUNNER_35",
+        "file": "netrunner.ttf"
+      },
+      {
+         "menuIcon": true,
+         "name": "IMAGE_MENU_ICON",
+         "type": "png",
+         "file": "menu-icon.png"
+      }
+    ]
+  }
+}

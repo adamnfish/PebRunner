@@ -6,39 +6,26 @@ PebRunner is an
 assistant for your wrist! It features a click tracker and random
 number generator.
 
-Note that this is not an official app, I am in no way associated with
+*Note*: this is not an official app, I am in no way associated with
 FFG. This app is purely for fun, hopefully you find it useful!
 
 ## Features
 
-### Random number generator
-
-* Pressing the Select button will generate a random number between 1 and 5 (useful for randomising hand access)
 * Pressing the Down button will advance the Pebble app's click tracker
 * Pressing Up will start a new turn
+* Pressing Select will generate a random number between 1 and 5 (useful for randomising hand access)
 
-## Installung
+## Installing
 
 I haven't worked out how to publish Pebble apps yet. You can install
 the app using the SDK or via the `pbw` file that I'll make available
 in this repo somewhere.
 
-## Issues / contact
+### Changelog
 
-If you find any problems or generally have any questions feel free to
-raise an issue on this repository. I'd love to hear if you've found it
-helpful.
+#### v0.1
 
-### Known issues
-
-It only supports 8 clicks at the moment (that's all that fit on
-screen). If you have a super-janky-combo deck that needs more than 8
-clicks in a turn then good for you but you'll struggle here. If you
-continue past 8 it'll start from 0 again so you should still be able
-to use PebRunner to help a bit.
-
-Random numbers are currently chosen from 1-5 and there's currently no
-way to change this.
+First version of the app!
 
 ### Upcoming features
 
@@ -46,6 +33,23 @@ way to change this.
 * more flexible hand randomisation (not just 1-5)
 * faction colours for Pebble Time
 * improved design
+
+## Issues / contact
+
+If you find any problems or generally have any questions feel free to
+raise an issue on this repository. I'd love to hear if you've found it
+helpful. Pull Requests are welcome :-)
+
+### Known issues
+
+It only supports 8 clicks at the moment (that's all that fit on
+screen). If you have a super-janky-combo deck that needs more than 8
+clicks in a turn then good for you but you'll struggle here. If you
+continue past 8 it'll start from 1 again so you should still be able
+to use PebRunner to help a bit.
+
+Random numbers are currently chosen from 1-5 and there's currently no
+way to change this.
 
 ## Thanks
 

@@ -12,8 +12,8 @@ FFG. This app is purely for fun, hopefully you find it useful!
 ## Features
 
 * Pressing the Down button will advance the Pebble app's click tracker
-* Pressing Up will start a new turn
 * Pressing Select will generate a random number between 1 and 5 (useful for randomising hand access)
+* Pressing Up will start a new turn
 
 ![Start screen](screenshots/start.png) ![Click tracker](screenshots/clicks.png) ![Random numbers](screenshots/random.png) ![New turn](screenshots/new-turn.png)
 

@@ -21,9 +21,9 @@ I haven't worked out how to publish Pebble apps yet. You can install
 the app using the SDK or via the `pbw` file that I'll make available
 in this repo somewhere.
 
-### Changelog
+## Changelog
 
-#### v0.1
+### v0.1
 
 First version of the app!
 

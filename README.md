@@ -15,6 +15,8 @@ FFG. This app is purely for fun, hopefully you find it useful!
 * Pressing Up will start a new turn
 * Pressing Select will generate a random number between 1 and 5 (useful for randomising hand access)
 
+![Start screen](screenshots/start.png) ![Click tracker](screenshots/clicks.png) ![Random numbers](screenshots/random.png) ![New turn](screenshots/new-turn.png)
+
 ## Installing
 
 I haven't worked out how to publish Pebble apps yet. You can install

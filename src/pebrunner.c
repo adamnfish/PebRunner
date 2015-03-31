@@ -4,7 +4,6 @@ static Window *window;
 static TextLayer *rand_text_layer;
 static TextLayer *click_count_text_layer;
 static GFont *netrunner_font;
-static GFont *random_font;
 static int click_count = 0;
 
 
@@ -47,13 +46,12 @@ static void window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 
   netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
-  random_font = fonts_get_system_font(FONT_KEY_GOTHIC_24);
 
   rand_text_layer = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w, 90 } });
   text_layer_set_background_color(rand_text_layer, GColorClear);
   text_layer_set_text_alignment(rand_text_layer, GTextAlignmentCenter);
   text_layer_set_overflow_mode(rand_text_layer, GTextOverflowModeWordWrap);
-  text_layer_set_font(rand_text_layer, random_font);
+  text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
   text_layer_set_text(rand_text_layer, "Down for click\nUp for new turn\nSelect for random #");
   layer_add_child(window_layer, text_layer_get_layer(rand_text_layer));
 
@@ -69,6 +67,8 @@ static void window_load(Window *window) {
 
 static void window_unload(Window *window) {
   text_layer_destroy(rand_text_layer);
+  text_layer_destroy(click_count_text_layer);
+  fonts_unload_custom_font(netrunner_font);
 }
 
 static void init(void) {

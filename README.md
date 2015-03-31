@@ -7,7 +7,8 @@ assistant for your wrist! It features a click tracker and random
 number generator.
 
 *Note*: this is not an official app, I am in no way associated with
-FFG. This app is purely for fun, hopefully you find it useful!
+[Fantasy Flight Games](https://www.fantasyflightgames.com/en/index/). This
+app is purely for fun, hopefully you find it useful!
 
 ## Features
 
@@ -19,11 +20,17 @@ FFG. This app is purely for fun, hopefully you find it useful!
 
 ## Installing
 
-I haven't worked out how to publish Pebble apps yet. You can install
-the app using the SDK or via the `pbw` file that I'll make available
-in this repo somewhere.
+PebRunner is available in the Pebble appstore!
+
+You can also install old versions of the app using the SDK or via the
+`pbw` files available in the Releases section of this repository.
 
 ## Changelog
+
+### v0.2
+
+* correct app name
+* improve memory management slightly
 
 ### v0.1
 
@@ -31,7 +38,7 @@ First version of the app!
 
 ### Upcoming features
 
-* psi-game random number generator
+* psi-game number wizard
 * more flexible hand randomisation (not just 1-5)
 * faction colours for Pebble Time
 * improved design

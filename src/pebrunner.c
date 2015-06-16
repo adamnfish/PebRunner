@@ -5,6 +5,10 @@ static TextLayer *rand_text_layer;
 static TextLayer *click_count_text_layer;
 static GFont *netrunner_font;
 static int click_count = 0;
+static ActionBarLayer *action_bar;
+static GBitmap *die_icon;
+static GBitmap *click_icon;
+static GBitmap *new_turn_icon;
 
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -63,6 +67,18 @@ static void window_load(Window *window) {
   text_layer_set_overflow_mode(click_count_text_layer, GTextOverflowModeWordWrap);
 
   layer_add_child(window_layer, text_layer_get_layer(click_count_text_layer));
+
+  die_icon = gbitmap_create_with_resource(RESOURCE_ID_DIE);
+  click_icon = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON);
+  new_turn_icon = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN);
+
+  action_bar = action_bar_layer_create();
+  action_bar_layer_add_to_window(action_bar, window);
+  action_bar_layer_set_click_config_provider(action_bar,
+					     click_config_provider);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
 }
 
 static void window_unload(Window *window) {
@@ -75,7 +91,6 @@ static void init(void) {
   srand(time(NULL));
 
   window = window_create();
-  window_set_click_config_provider(window, click_config_provider);
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
     .unload = window_unload,

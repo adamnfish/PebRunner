@@ -21,6 +21,21 @@
         "file": "netrunner.ttf"
       },
       {
+        "type": "png",
+        "name": "DIE",
+        "file": "die.png"
+      },
+      {
+        "type": "png",
+        "name": "CLICKICON",
+        "file": "clickicon.png"
+      },
+      {
+        "type": "png",
+        "name": "NEWTURN",
+        "file": "newturn.png"
+      },
+      {
          "menuIcon": true,
          "name": "IMAGE_MENU_ICON",
          "type": "png",

@@ -43,10 +43,10 @@ First version of the app!
 
 ### Upcoming features
 
+* faction icons (and colours for Pebble Time)
+* improved design
 * psi-game number wizard
 * more flexible hand randomisation (not just 1-5)
-* faction colours for Pebble Time
-* improved design
 
 ## Issues / contact
 
@@ -56,11 +56,11 @@ helpful. Pull Requests are welcome :-)
 
 ### Known issues
 
-It only supports 8 clicks at the moment (that's all that fit on
-screen). If you have a super-janky-combo deck that needs more than 8
+It only supports 6 clicks at the moment (that's all that fit on
+screen). If you have a super-janky-combo deck that needs more than 6
 clicks in a turn then good for you but you'll struggle here. If you
-continue past 8 it'll start from 1 again so you should still be able
-to use PebRunner to help a bit.
+continue past 6 it'll start from 1 again so you should still be able
+to use PebRunner to help.
 
 Random numbers are currently chosen from 1-5 and there's currently no
 way to change this.

@@ -3,8 +3,8 @@
   "shortName": "PebRunner",
   "longName": "Pebble Netrunner",
   "companyName": "adamnfish",
-  "versionCode": 0.2,
-  "versionLabel": "0.2",
+  "versionCode": 0.3,
+  "versionLabel": "0.3",
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "watchapp": {
@@ -19,6 +19,21 @@
         "type": "font",
         "name": "NETRUNNER_35",
         "file": "netrunner.ttf"
+      },
+      {
+        "type": "png",
+        "name": "DIE",
+        "file": "die.png"
+      },
+      {
+        "type": "png",
+        "name": "CLICKICON",
+        "file": "clickicon.png"
+      },
+      {
+        "type": "png",
+        "name": "NEWTURN",
+        "file": "newturn.png"
       },
       {
          "menuIcon": true,

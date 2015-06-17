@@ -16,7 +16,7 @@ app is purely for fun, hopefully you find it useful!
 * Pressing Select will generate a random number between 1 and 5 (useful for randomising hand access)
 * Pressing Up will start a new turn
 
-![Start screen](screenshots/start.png) ![Click tracker](screenshots/clicks.png) ![Random numbers](screenshots/random.png) ![New turn](screenshots/new-turn.png)
+![Click tracker](screenshots/clicks.png) ![Random numbers](screenshots/random.png) ![New turn](screenshots/new-turn.png)
 
 ## Installing
 
@@ -26,6 +26,11 @@ You can also install old versions of the app using the SDK or via the
 `pbw` files available in the Releases section of this repository.
 
 ## Changelog
+
+### v0.3
+
+* improved design!
+* action bar to describe button behaviours
 
 ### v0.2
 

@@ -3,8 +3,8 @@
   "shortName": "PebRunner",
   "longName": "Pebble Netrunner",
   "companyName": "adamnfish",
-  "versionCode": 0.2,
-  "versionLabel": "0.2",
+  "versionCode": 0.3,
+  "versionLabel": "0.3",
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "watchapp": {

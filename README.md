@@ -27,6 +27,11 @@ You can also install old versions of the app using the SDK or via the
 
 ## Changelog
 
+### v0.3
+
+* improved design!
+* action bar to describe button behaviours
+
 ### v0.2
 
 * correct app name

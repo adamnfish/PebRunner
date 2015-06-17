@@ -30,7 +30,7 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   int i;
   click_buffer[0] = 0;
   click_count++;
-  if (click_count > 8) {
+  if (click_count > 6) {
     click_count = 1;
   }
   for (i = 0; i < click_count; i++) {
@@ -51,15 +51,14 @@ static void window_load(Window *window) {
 
   netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
 
-  rand_text_layer = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w, 90 } });
+  rand_text_layer = text_layer_create((GRect) { .origin = { 10, 10 }, .size = { 80, 90 } });
   text_layer_set_background_color(rand_text_layer, GColorClear);
-  text_layer_set_text_alignment(rand_text_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(rand_text_layer, GTextAlignmentRight);
   text_layer_set_overflow_mode(rand_text_layer, GTextOverflowModeWordWrap);
-  text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
-  text_layer_set_text(rand_text_layer, "Down for click\nUp for new turn\nSelect for random #");
+  text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
   layer_add_child(window_layer, text_layer_get_layer(rand_text_layer));
 
-  click_count_text_layer = text_layer_create((GRect) { .origin = { 0, 52 }, .size = { bounds.size.w, 100 } });
+  click_count_text_layer = text_layer_create((GRect) { .origin = { 6, 52 }, .size = { 110, 80 } });
   text_layer_set_background_color(click_count_text_layer, GColorClear);
   text_layer_set_text(click_count_text_layer, "");
   text_layer_set_text_alignment(click_count_text_layer, GTextAlignmentCenter);

@@ -56,6 +56,7 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(rand_text_layer, GTextAlignmentRight);
   text_layer_set_overflow_mode(rand_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
+  text_layer_set_text(rand_text_layer, "New turn");
   layer_add_child(window_layer, text_layer_get_layer(rand_text_layer));
 
   click_count_text_layer = text_layer_create((GRect) { .origin = { 6, 52 }, .size = { 110, 80 } });

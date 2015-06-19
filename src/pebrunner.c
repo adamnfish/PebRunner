@@ -9,6 +9,9 @@ static ActionBarLayer *action_bar;
 static GBitmap *die_icon;
 static GBitmap *click_icon;
 static GBitmap *new_turn_icon;
+static GBitmap *die_icon_runner;
+static GBitmap *click_icon_runner;
+static GBitmap *new_turn_icon_runner;
 static bool corpTurn = true;
 
 
@@ -28,9 +31,15 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   if (corpTurn) {
     window_set_background_color(window, GColorBabyBlueEyes);
     action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
   } else {
     window_set_background_color(window, GColorMelon);
     action_bar_layer_set_background_color(action_bar, GColorBulgarianRose);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon_runner);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon_runner);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon_runner);
   }
   #endif
 }
@@ -58,7 +67,6 @@ static void click_config_provider(void *context) {
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
 
   netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
 
@@ -79,14 +87,14 @@ static void window_load(Window *window) {
 
   layer_add_child(window_layer, text_layer_get_layer(click_count_text_layer));
 
-  die_icon = gbitmap_create_with_resource(RESOURCE_ID_DIE);
-  click_icon = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON);
-  new_turn_icon = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN);
-
   action_bar = action_bar_layer_create();
   action_bar_layer_add_to_window(action_bar, window);
   action_bar_layer_set_click_config_provider(action_bar,
 					     click_config_provider);
+
+  die_icon = gbitmap_create_with_resource(RESOURCE_ID_DIE);
+  click_icon = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON);
+  new_turn_icon = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
@@ -94,6 +102,10 @@ static void window_load(Window *window) {
   #ifdef PBL_COLOR
   window_set_background_color(window, GColorBabyBlueEyes);
   action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
+
+  die_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_DIE_RED);
+  click_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON_RED);
+  new_turn_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN_RED);
   #endif
 }
 

@@ -27,8 +27,20 @@
       },
       {
         "type": "png",
+        "name": "DIE_RED",
+        "file": "die-red.png",
+        "targetPlatforms": [ "basalt" ]
+      },
+      {
+        "type": "png",
         "name": "CLICKICON",
         "file": "clickicon.png"
+      },
+      {
+        "type": "png",
+        "name": "CLICKICON_RED",
+        "file": "clickicon-red.png",
+        "targetPlatforms": [ "basalt" ]
       },
       {
         "type": "png",
@@ -36,10 +48,16 @@
         "file": "newturn.png"
       },
       {
-         "menuIcon": true,
-         "name": "IMAGE_MENU_ICON",
-         "type": "png",
-         "file": "menu-icon.png"
+        "type": "png",
+        "name": "NEWTURN_RED",
+        "file": "newturn-red.png",
+        "targetPlatforms": [ "basalt" ]
+      },
+      {
+        "menuIcon": true,
+        "name": "IMAGE_MENU_ICON",
+        "type": "png",
+        "file": "menu-icon.png"
       }
     ]
   }

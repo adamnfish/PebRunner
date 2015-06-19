@@ -19,7 +19,7 @@ app is purely for fun, hopefully you find it useful!
 
 ### Pebble Time
 
-![New turn](screenshots/new-turn-corp.png) ![Click tracker](screenshots/clicks-corp.png) ![Random numbers](screenshots/random-corp.png) ![Click tracker](screenshots/clicks-runner.png) ![Random numbers](screenshots/random-runner.png)
+![Click tracker](screenshots/clicks-corp.png) ![Random numbers](screenshots/random-corp.png) ![New turn](screenshots/new-turn-corp.png) ![Click tracker](screenshots/clicks-runner.png) ![Random numbers](screenshots/random-runner.png) ![New turn](screenshots/new-turn-runner.png)
 
 ### Older Pebble models
 

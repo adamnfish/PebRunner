@@ -1,10 +1,11 @@
 PebRunner
 =========
 
-PebRunner is an
-[Android: Netrunner](https://www.fantasyflightgames.com/en/products/android-netrunner-the-card-game/)
+PebRunner is an [Android:
+Netrunner](https://www.fantasyflightgames.com/en/products/android-netrunner-the-card-game/)
 assistant for your wrist! It features a click tracker and random
-number generator.
+number generator. It supports the Pebble Time with a colour interface
+as well as older pebble devices with a black and white screem.
 
 *Note*: this is not an official app, I am in no way associated with
 [Fantasy Flight Games](https://www.fantasyflightgames.com/en/index/). This
@@ -16,6 +17,12 @@ app is purely for fun, hopefully you find it useful!
 * Pressing Select will generate a random number between 1 and 5 (useful for randomising hand access)
 * Pressing Up will start a new turn
 
+### Pebble Time
+
+![New turn](screenshots/new-turn-corp.png) ![Click tracker](screenshots/clicks-corp.png) ![Random numbers](screenshots/random-corp.png) ![Click tracker](screenshots/clicks-runner.png) ![Random numbers](screenshots/random-runner.png)
+
+### Older Pebble models
+
 ![Click tracker](screenshots/clicks.png) ![Random numbers](screenshots/random.png) ![New turn](screenshots/new-turn.png)
 
 ## Installing
@@ -26,6 +33,13 @@ You can also install old versions of the app using the SDK or via the
 `pbw` files available in the Releases section of this repository.
 
 ## Changelog
+
+### v0.4
+
+* official Pebble Time support
+* blue/red display for corp/runner turns
+* improved action bar on pebbletime
+* tweaked layout of clicks so it displays more consistently across devices
 
 ### v0.3
 

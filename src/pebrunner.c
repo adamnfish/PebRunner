@@ -9,10 +9,12 @@ static ActionBarLayer *action_bar;
 static GBitmap *die_icon;
 static GBitmap *click_icon;
 static GBitmap *new_turn_icon;
+static bool corpTurn = true;
+#ifdef PBL_COLOR
 static GBitmap *die_icon_runner;
 static GBitmap *click_icon_runner;
 static GBitmap *new_turn_icon_runner;
-static bool corpTurn = true;
+#endif
 
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {

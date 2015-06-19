@@ -9,6 +9,7 @@ static ActionBarLayer *action_bar;
 static GBitmap *die_icon;
 static GBitmap *click_icon;
 static GBitmap *new_turn_icon;
+static bool corpTurn = true;
 
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -20,8 +21,18 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   click_count = 0;
+  corpTurn = !corpTurn;
   text_layer_set_text(rand_text_layer, "New turn");
   text_layer_set_text(click_count_text_layer, "");
+  #ifdef PBL_COLOR
+  if (corpTurn) {
+    window_set_background_color(window, GColorBabyBlueEyes);
+    action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
+  } else {
+    window_set_background_color(window, GColorMelon);
+    action_bar_layer_set_background_color(action_bar, GColorBulgarianRose);
+  }
+  #endif
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -59,7 +70,7 @@ static void window_load(Window *window) {
   text_layer_set_text(rand_text_layer, "New turn");
   layer_add_child(window_layer, text_layer_get_layer(rand_text_layer));
 
-  click_count_text_layer = text_layer_create((GRect) { .origin = { 6, 52 }, .size = { 110, 80 } });
+  click_count_text_layer = text_layer_create((GRect) { .origin = { 3, 52 }, .size = { 110, 80 } });
   text_layer_set_background_color(click_count_text_layer, GColorClear);
   text_layer_set_text(click_count_text_layer, "");
   text_layer_set_text_alignment(click_count_text_layer, GTextAlignmentCenter);
@@ -79,6 +90,11 @@ static void window_load(Window *window) {
   action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
+
+  #ifdef PBL_COLOR
+  window_set_background_color(window, GColorBabyBlueEyes);
+  action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
+  #endif
 }
 
 static void window_unload(Window *window) {

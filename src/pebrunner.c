@@ -3,6 +3,9 @@
 static Window *window;
 static TextLayer *rand_text_layer;
 static TextLayer *click_count_text_layer;
+static TextLayer *up_help_text_layer;
+static TextLayer *click_help_text_layer;
+static TextLayer *down_help_text_layer;
 static GFont *netrunner_font;
 static int click_count = 0;
 static ActionBarLayer *action_bar;
@@ -17,18 +20,32 @@ static GBitmap *new_turn_icon_runner;
 #endif
 
 
+static void show_help_text() {
+  layer_set_hidden((Layer *)up_help_text_layer, false);
+  layer_set_hidden((Layer *)click_help_text_layer, false);
+  layer_set_hidden((Layer *)down_help_text_layer, false);
+}
+
+static void hide_help_text() {
+  layer_set_hidden((Layer *)up_help_text_layer, true);
+  layer_set_hidden((Layer *)click_help_text_layer, true);
+  layer_set_hidden((Layer *)down_help_text_layer, true);
+}
+
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   static char buffer[2];
   int result = (rand() % 5) + 1;
   snprintf(buffer, sizeof(buffer), "%u", result);
   text_layer_set_text(rand_text_layer, buffer);
+  hide_help_text();
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   click_count = 0;
   corpTurn = !corpTurn;
-  text_layer_set_text(rand_text_layer, "New turn");
+  text_layer_set_text(rand_text_layer, "");
   text_layer_set_text(click_count_text_layer, "");
+  show_help_text();
   #ifdef PBL_COLOR
   if (corpTurn) {
     window_set_background_color(window, GColorBabyBlueEyes);
@@ -59,6 +76,7 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
     strcat(click_buffer, "");
   }
   text_layer_set_text(click_count_text_layer, click_buffer);
+  hide_help_text();
 }
 
 static void click_config_provider(void *context) {
@@ -70,6 +88,11 @@ static void click_config_provider(void *context) {
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
 
+  #ifdef PBL_SDK_2
+  window_set_fullscreen(window, true);
+  layer_set_bounds(window_layer, GRect(0, 0, 144, 168));
+  #endif
+
   netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
 
   rand_text_layer = text_layer_create((GRect) { .origin = { 10, 10 }, .size = { 80, 90 } });
@@ -77,7 +100,7 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(rand_text_layer, GTextAlignmentRight);
   text_layer_set_overflow_mode(rand_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
-  text_layer_set_text(rand_text_layer, "New turn");
+  text_layer_set_text(rand_text_layer, "");
   layer_add_child(window_layer, text_layer_get_layer(rand_text_layer));
 
   click_count_text_layer = text_layer_create((GRect) { .origin = { 3, 52 }, .size = { 110, 80 } });
@@ -109,6 +132,38 @@ static void window_load(Window *window) {
   click_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON_RED);
   new_turn_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN_RED);
   #endif
+
+  // line up help text with action bar on different platforms
+  #ifdef PBL_SDK_2
+  up_help_text_layer = text_layer_create((GRect) { .origin = { 10, 18 }, .size = { 107, 30 } });
+  click_help_text_layer = text_layer_create((GRect) { .origin = { 10, 70 }, .size = { 107, 30 } });
+  down_help_text_layer = text_layer_create((GRect) { .origin = { 10, 124 }, .size = { 107, 30 } });
+  #else
+  up_help_text_layer = text_layer_create((GRect) { .origin = { 10, 20 }, .size = { 98, 30 } });
+  click_help_text_layer = text_layer_create((GRect) { .origin = { 10, 71 }, .size = { 98, 30 } });
+  down_help_text_layer = text_layer_create((GRect) { .origin = { 10, 122 }, .size = { 98, 30 } });
+  #endif
+
+  text_layer_set_font(up_help_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+  text_layer_set_background_color(up_help_text_layer, GColorClear);
+  text_layer_set_text(up_help_text_layer, "New turn");
+  text_layer_set_overflow_mode(up_help_text_layer, GTextOverflowModeWordWrap);
+  text_layer_set_text_alignment(up_help_text_layer, GTextAlignmentRight);
+  layer_add_child(window_layer, text_layer_get_layer(up_help_text_layer));
+
+  text_layer_set_font(click_help_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+  text_layer_set_background_color(click_help_text_layer, GColorClear);
+  text_layer_set_text(click_help_text_layer, "Random number");
+  text_layer_set_overflow_mode(click_help_text_layer, GTextOverflowModeWordWrap);
+  text_layer_set_text_alignment(click_help_text_layer, GTextAlignmentRight);
+  layer_add_child(window_layer, text_layer_get_layer(click_help_text_layer));
+
+  text_layer_set_font(down_help_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+  text_layer_set_background_color(down_help_text_layer, GColorClear);
+  text_layer_set_text(down_help_text_layer, "Click");
+  text_layer_set_overflow_mode(down_help_text_layer, GTextOverflowModeWordWrap);
+  text_layer_set_text_alignment(down_help_text_layer, GTextAlignmentRight);
+  layer_add_child(window_layer, text_layer_get_layer(down_help_text_layer));
 }
 
 static void window_unload(Window *window) {

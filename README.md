@@ -7,6 +7,8 @@ assistant for your wrist! It features a click tracker, random number
 generator and round timer. It supports the original Pebble models as
 well as new Pebble Time models with colour screens.
 
+![PebRunner card](http://www.adamnfish.com/assets/images/posts/56/pebble-card.png)
+
 *Note*: this is not an official app, I am in no way associated with
 [Fantasy Flight Games](https://www.fantasyflightgames.com/en/index/). This
 app is purely for fun, hopefully you find it useful!

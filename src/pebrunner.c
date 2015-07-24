@@ -1,25 +1,37 @@
 #include <pebble.h>
 
-static Window *window;
-static TextLayer *rand_text_layer;
+// main window
+static Window *main_window;
+static GFont *netrunner_font;
+
+// main text layers
 static TextLayer *click_count_text_layer;
+static TextLayer *rand_text_layer;
 static TextLayer *time_text_layer;
 static TextLayer *up_help_text_layer;
 static TextLayer *click_help_text_layer;
 static TextLayer *down_help_text_layer;
-static GFont *netrunner_font;
-static int click_count = 0;
+
+// action bar and icons
 static ActionBarLayer *action_bar;
 static GBitmap *die_icon;
 static GBitmap *click_icon;
 static GBitmap *new_turn_icon;
-static bool corpTurn = true;
-static unsigned int start_time = 0;
+
+// extra icons resources for colour devices
 #ifdef PBL_COLOR
 static GBitmap *die_icon_runner;
 static GBitmap *click_icon_runner;
 static GBitmap *new_turn_icon_runner;
 #endif
+
+// state
+static int click_count = 0;
+static bool corpTurn = true;
+static unsigned int start_time = 0;
+
+
+/* ============= Help text formain window action bar ============== */
 
 static void show_help_text() {
   layer_set_hidden((Layer *)up_help_text_layer, false);
@@ -32,6 +44,8 @@ static void hide_help_text() {
   layer_set_hidden((Layer *)click_help_text_layer, true);
   layer_set_hidden((Layer *)down_help_text_layer, true);
 }
+
+/* ============= Main window click handlers ============== */
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   static char buffer[2];
@@ -49,13 +63,13 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   show_help_text();
   #ifdef PBL_COLOR
   if (corpTurn) {
-    window_set_background_color(window, GColorBabyBlueEyes);
+    window_set_background_color(main_window, GColorBabyBlueEyes);
     action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
     action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
     action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
     action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
   } else {
-    window_set_background_color(window, GColorMelon);
+    window_set_background_color(main_window, GColorMelon);
     action_bar_layer_set_background_color(action_bar, GColorBulgarianRose);
     action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon_runner);
     action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon_runner);
@@ -86,6 +100,8 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
 }
 
+/* ============= Logic for round timer ============== */
+
 static void update_game_time() {
   static char buffer[] = "000:00";
   unsigned int current_time = time(NULL);
@@ -95,11 +111,15 @@ static void update_game_time() {
   text_layer_set_text(time_text_layer, buffer);
 }
 
+/* ============= Tick handler for main window's round timer ============== */
+
 static void tick_handler(struct tm *tick_time, TimeUnits time_changed) {
   update_game_time();
 }
 
-static void window_load(Window *window) {
+/* ============= Setup main window ============== */
+
+static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
 
   // remove status bar on applite for consistent layout
@@ -192,7 +212,7 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(down_help_text_layer));
 }
 
-static void window_unload(Window *window) {
+static void main_window_unload(Window *window) {
   text_layer_destroy(rand_text_layer);
   text_layer_destroy(click_count_text_layer);
   fonts_unload_custom_font(netrunner_font);
@@ -202,27 +222,27 @@ static void init(void) {
   start_time = time(NULL);
   srand(start_time);
 
-  window = window_create();
-  window_set_window_handlers(window, (WindowHandlers) {
-    .load = window_load,
-    .unload = window_unload,
+  main_window = window_create();
+  window_set_window_handlers(main_window, (WindowHandlers) {
+    .load = main_window_load,
+    .unload = main_window_unload,
   });
 
   // register tick handler
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
 
   const bool animated = true;
-  window_stack_push(window, animated);
+  window_stack_push(main_window, animated);
 }
 
 static void deinit(void) {
-  window_destroy(window);
+  window_destroy(main_window);
 }
 
 int main(void) {
   init();
 
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", window);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", main_window);
 
   app_event_loop();
   deinit();

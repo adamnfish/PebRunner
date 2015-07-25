@@ -47,10 +47,11 @@ static void psi_result_window_load(Window *window) {
   text_layer_set_text_alignment(psi_result_text_layer, GTextAlignmentCenter);
   text_layer_set_font(psi_result_text_layer, FONT_KEY_GOTHIC_28);
 
-  static char buffer[1];
-  unsigned short int result = calculate_result();
-  snprintf(buffer, sizeof(buffer), "%u", result);
-  text_layer_set_text(psi_result_text_layer, buffer);
+  //  static char buffer[1];
+  //  unsigned short int result = calculate_result();
+  //  snprintf(buffer, sizeof(buffer), "%u", result);
+  //  text_layer_set_text(psi_result_text_layer, buffer);
+  //  text_layer_set_text(psi_result_text_layer, "test");
 
   APP_LOG(APP_LOG_LEVEL_INFO, "Debugging, window: %p, top_window: %p", window, window_stack_get_top_window());
 
@@ -82,14 +83,14 @@ static void value_choice_window_select_handler(struct NumberWindow *number_windo
 
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling psi-game value: %u", psi_game_value);
 
-  // pop the setup windows from the stack
-  //window_stack_remove(number_window_get_window(value_choice_window), false);
-  //window_stack_remove(psi_mode_window, false);
-  window_stack_pop(false);
-  window_stack_pop(false);
-  window_destroy(number_window_get_window(value_choice_window));
   // display result in new window
   display_psi_result();
+  // pop the setup windows from the stack
+  //  window_stack_remove(number_window_get_window(value_choice_window), false);
+  //  window_stack_remove(psi_mode_window, false);
+  //  window_stack_pop(false);
+  //  window_stack_pop(false);
+  //  window_destroy(number_window_get_window(value_choice_window));
 }
 
 static void display_value_choice() {

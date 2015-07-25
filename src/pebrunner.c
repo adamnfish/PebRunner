@@ -128,6 +128,8 @@ static void tick_handler(struct tm *tick_time, TimeUnits time_changed) {
 /* ============= Setup main window ============== */
 
 static void main_window_load(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "loading main window");
+
   Layer *window_layer = window_get_root_layer(window);
 
   // remove status bar on applite for consistent layout
@@ -221,9 +223,24 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Unloading main window");
+
   text_layer_destroy(rand_text_layer);
   text_layer_destroy(click_count_text_layer);
   fonts_unload_custom_font(netrunner_font);
+}
+
+static void main_window_appear(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "appearing main window");
+
+  update_game_time();
+  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+}
+
+static void main_window_disappear(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Disappearing main window");
+
+  tick_timer_service_unsubscribe();
 }
 
 static void init(void) {
@@ -234,6 +251,8 @@ static void init(void) {
   window_set_window_handlers(main_window, (WindowHandlers) {
     .load = main_window_load,
     .unload = main_window_unload,
+    .appear = main_window_appear,
+    .disappear = main_window_disappear,
   });
 
   // register tick handler

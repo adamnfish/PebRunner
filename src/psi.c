@@ -51,7 +51,7 @@ static void psi_result_window_load(Window *window) {
   //  unsigned short int result = calculate_result();
   //  snprintf(buffer, sizeof(buffer), "%u", result);
   //  text_layer_set_text(psi_result_text_layer, buffer);
-  //  text_layer_set_text(psi_result_text_layer, "test");
+  text_layer_set_text(psi_result_text_layer, "test");
 
   APP_LOG(APP_LOG_LEVEL_INFO, "Debugging, window: %p, top_window: %p", window, window_stack_get_top_window());
 

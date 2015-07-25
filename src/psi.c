@@ -38,20 +38,24 @@ static void psi_result_window_load(Window *window) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Loading psi-game result window");
 
   psi_result_text_layer = text_layer_create((GRect) { .origin = { 40, 50 }, .size = { 64, 60 } });
-  #ifdef PBL_COLOR
-  text_layer_set_background_color(psi_result_text_layer, GColorRed);
-  #else
   text_layer_set_background_color(psi_result_text_layer, GColorClear);
-  #endif
-  text_layer_set_text_color(psi_result_text_layer, GColorWhite);
+  text_layer_set_text_color(psi_result_text_layer, GColorBlack);
   text_layer_set_text_alignment(psi_result_text_layer, GTextAlignmentCenter);
-  text_layer_set_font(psi_result_text_layer, FONT_KEY_GOTHIC_28);
+  text_layer_set_font(psi_result_text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_MEDIUM_NUMBERS));
 
-  //  static char buffer[1];
+  #ifdef PBL_COLOR
+  if (corp) {
+    window_set_background_color(window, GColorBabyBlueEyes);
+  } else {
+    window_set_background_color(window, GColorMelon);
+  }
+  #endif
+
+  static char buffer[2];
   //  unsigned short int result = calculate_result();
-  //  snprintf(buffer, sizeof(buffer), "%u", result);
-  //  text_layer_set_text(psi_result_text_layer, buffer);
-  text_layer_set_text(psi_result_text_layer, "test");
+  unsigned short int result = (rand() % 2) + 1;
+  snprintf(buffer, sizeof(buffer), "%u", result);
+  text_layer_set_text(psi_result_text_layer, buffer);
 
   APP_LOG(APP_LOG_LEVEL_INFO, "Debugging, window: %p, top_window: %p", window, window_stack_get_top_window());
 
@@ -86,11 +90,9 @@ static void value_choice_window_select_handler(struct NumberWindow *number_windo
   // display result in new window
   display_psi_result();
   // pop the setup windows from the stack
-  //  window_stack_remove(number_window_get_window(value_choice_window), false);
-  //  window_stack_remove(psi_mode_window, false);
-  //  window_stack_pop(false);
-  //  window_stack_pop(false);
-  //  window_destroy(number_window_get_window(value_choice_window));
+  window_stack_remove(number_window_get_window(value_choice_window), false);
+  window_stack_remove(psi_mode_window, false);
+  window_destroy(number_window_get_window(value_choice_window));
 }
 
 static void display_value_choice() {
@@ -183,7 +185,7 @@ static void display_psi_mode_menu(Window *window) {
     .items = first_psi_mode_items,
   };
   psi_mode_sections[1] = (SimpleMenuSection) {
-    .title = "Your side (account siphon)",
+    .title = "Account siphon",
     .num_items = NUM_SECOND_PSI_MODE_ITEMS,
     .items = second_psi_mode_items,
   };

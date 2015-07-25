@@ -247,10 +247,10 @@ static void deinit(void) {
 }
 
 int main(void) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Initializing app");
   init();
-
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", main_window);
-
   app_event_loop();
+  APP_LOG(APP_LOG_LEVEL_INFO, "De-initializing app");
   deinit();
 }

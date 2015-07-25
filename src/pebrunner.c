@@ -25,6 +25,9 @@ static GBitmap *click_icon_runner;
 static GBitmap *new_turn_icon_runner;
 #endif
 
+// psi-game wizard references (defined in psi.c)
+void show_psi_menu();
+
 // state
 static int click_count = 0;
 static bool corpTurn = true;
@@ -94,10 +97,15 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   hide_help_text();
 }
 
+static void long_select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  show_psi_menu();
+}
+
 static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+  window_long_click_subscribe(BUTTON_ID_SELECT, 500, long_select_click_handler, NULL);
 }
 
 /* ============= Logic for round timer ============== */
@@ -231,8 +239,7 @@ static void init(void) {
   // register tick handler
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
 
-  const bool animated = true;
-  window_stack_push(main_window, animated);
+  window_stack_push(main_window, true);
 }
 
 static void deinit(void) {

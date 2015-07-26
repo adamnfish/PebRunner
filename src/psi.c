@@ -1,9 +1,27 @@
 #include <pebble.h>
 
-// psi-game window
+// psi-game result display
+static Window *psi_result_window;
+static TextLayer *psi_result_text_layer;
+
+// psi-game value choice
+static Window *psi_value_window;
+
+#define NUM_PSI_VALUE_SECTIONS 1
+#define NUM_FIRST_PSI_VALUE_ITEMS 15
+static SimpleMenuLayer *psi_value_menu_layer;
+static SimpleMenuSection psi_value_sections[NUM_PSI_MODE_SECTIONS];
+static SimpleMenuItem first_psi_value_items[NUM_FIRST_PSI_MODE_ITEMS];
+
+#define NUM_PSIPHON_VALUE_SECTIONS 1
+#define NUM_FIRST_PSIPHON_VALUE_ITEMS 8
+static SimpleMenuLayer *psiphon_value_menu_layer;
+static SimpleMenuSection psiphon_value_sections[NUM_PSIPHON_MODE_SECTIONS];
+static SimpleMenuItem first_psiphon_value_items[NUM_FIRST_PSIPHON_MODE_ITEMS];
+
+// psi-game mode (runner / corp and siphon)
 static Window *psi_mode_window;
 
-// runner / corp menu
 #define NUM_PSI_MODE_SECTIONS 2
 #define NUM_FIRST_PSI_MODE_ITEMS 2
 #define NUM_SECOND_PSI_MODE_ITEMS 2
@@ -12,18 +30,19 @@ static SimpleMenuSection psi_mode_sections[NUM_PSI_MODE_SECTIONS];
 static SimpleMenuItem first_psi_mode_items[NUM_FIRST_PSI_MODE_ITEMS];
 static SimpleMenuItem second_psi_mode_items[NUM_SECOND_PSI_MODE_ITEMS];
 
-// psi-game choice
-static NumberWindow *value_choice_window;
-
-// psi-game result display
-static Window *psi_result_window;
-static TextLayer *psi_result_text_layer;
-
 // psi-game state (set by menu interactions)
 static bool corp = true;
 static bool siphon = false;
 static int psi_game_value = 0;
 
+//psi game data (see psi-data.c)
+extern unsigned short int oneThresholdsCorp[];
+extern unsigned short int twoThresholdsCorp[];
+extern unsigned short int oneSiphonThresholdsCorp[];
+extern unsigned short int oneThresholdsRunner[];
+extern unsigned short int twoThresholdsRunner[];
+extern unsigned short int oneSiphonThresholdsRunner[];
+extern unsigned short int twoSiphonThresholdsRunner[];
 
 /* ============= psi-game result display ============== */
 
@@ -82,10 +101,10 @@ static void display_psi_result() {
 
 /* ============= psi-game's value ============== */
 
-static void value_choice_window_select_handler(struct NumberWindow *number_window, void *context) {
-  psi_game_value = number_window_get_value(number_window);
+static void psi_value_choice_callback(int index, void *context) {
+  psi_game_value_index = index;
 
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling psi-game value: %u", psi_game_value);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling psi-game value with index: %u", psi_game_value);
 
   // display result in new window
   display_psi_result();
@@ -93,6 +112,14 @@ static void value_choice_window_select_handler(struct NumberWindow *number_windo
   window_stack_remove(number_window_get_window(value_choice_window), false);
   window_stack_remove(psi_mode_window, false);
   window_destroy(number_window_get_window(value_choice_window));
+}
+
+static void psi_value_menu() {
+
+}
+
+static void psiphon_value_menu() {
+
 }
 
 static void display_value_choice() {
@@ -120,13 +147,13 @@ static void display_value_choice() {
 
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Setting up psi-game value window: max: %u, min: %u is_corp: %u", max, min, corp);
 
-  value_choice_window = number_window_create(label, (NumberWindowCallbacks) {
-    .incremented = NULL,
-    .decremented = NULL,
-    .selected = value_choice_window_select_handler
-  }, NULL);
-  number_window_set_max(value_choice_window, max);
-  number_window_set_min(value_choice_window, min);
+  psi_value_window = window_create();
+  window_set_window_handlers(_window, (WindowHandlers) {
+    .load = main_window_load,
+    .unload = main_window_unload,
+    .appear = main_window_appear,
+    .disappear = main_window_disappear,
+  });
 
   window_stack_push(number_window_get_window(value_choice_window), true);
 }

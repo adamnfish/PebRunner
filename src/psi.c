@@ -52,8 +52,8 @@ static void psi_result_window_load(Window *window) {
   #endif
 
   static char buffer[2];
-  //  unsigned short int result = calculate_result();
-  unsigned short int result = (rand() % 2) + 1;
+  unsigned short int result = calculate_result();
+  //  unsigned short int result = (rand() % 2) + 1;
   snprintf(buffer, sizeof(buffer), "%u", result);
   text_layer_set_text(psi_result_text_layer, buffer);
 
@@ -104,17 +104,17 @@ static void display_value_choice() {
     min = 1;
     max = 7;
     if (corp) {
-      label = "How many credits do you have?";
+      label = "How rich are you?";
     } else {
-      label = "How many credits does the corp have?";
+      label = "How many corp credits?";
     }
   } else {
     min = 2;
     max = 10;
     if (corp) {
-      label = "what's the value of the runner winning?";
+      label = "Value to runner?";
     } else {
-      label = "What's the value of winning this psi-game?";
+      label = "Value of this run?";
     }
   }
 
@@ -136,24 +136,30 @@ static void display_value_choice() {
 /* TODO: add a "same as previous" item to menu */
 static void psi_mode_select_callback(int index, void *ctx) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling psi-game mode selection: %u", index);
-
+  siphon = false;
   // set state based on choice
   switch (index) {
   case 0:
     corp = true;
-    siphon = false;
     break;
   case 1:
     corp = false;
-    siphon = false;
     break;
-  case 2:
+  }
+  // display value chooser window
+  display_value_choice();
+}
+
+static void psi_mode_select_siphon_callback(int index, void *ctx) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling account siphon psi-game mode selection: %u", index);
+  siphon = true;
+  // set state based on choice
+  switch (index) {
+  case 0:
     corp = true;
-    siphon = true;
     break;
-  case 3:
+  case 1:
     corp = false;
-    siphon = true;
     break;
   }
   // display value chooser window
@@ -173,11 +179,11 @@ static void display_psi_mode_menu(Window *window) {
   };
   second_psi_mode_items[0] = (SimpleMenuItem) {
     .title = "Corp",
-    .callback = psi_mode_select_callback,
+    .callback = psi_mode_select_siphon_callback,
   };
   second_psi_mode_items[1] = (SimpleMenuItem) {
     .title = "Runner",
-    .callback = psi_mode_select_callback,
+    .callback = psi_mode_select_siphon_callback,
   };
   psi_mode_sections[0] = (SimpleMenuSection) {
     .title = "Your side",

@@ -3,10 +3,10 @@
   "shortName": "PebRunner",
   "longName": "Pebble Netrunner",
   "companyName": "adamnfish",
-  "versionCode": 0.5,
-  "versionLabel": "0.5",
+  "versionCode": 0.6,
+  "versionLabel": "0.6",
   "sdkVersion": "3",
-  "targetPlatforms": ["aplite", "basalt"],
+  "targetPlatforms": ["aplite", "basalt", "chalk"],
   "watchapp": {
     "watchface": false
   },
@@ -29,7 +29,7 @@
         "type": "png",
         "name": "DIE_RED",
         "file": "die-red.png",
-        "targetPlatforms": [ "basalt" ]
+          "targetPlatforms": [ "basalt", "chalk" ]
       },
       {
         "type": "png",
@@ -40,7 +40,7 @@
         "type": "png",
         "name": "CLICKICON_RED",
         "file": "clickicon-red.png",
-        "targetPlatforms": [ "basalt" ]
+        "targetPlatforms": [ "basalt", "chalk" ]
       },
       {
         "type": "png",
@@ -51,7 +51,7 @@
         "type": "png",
         "name": "NEWTURN_RED",
         "file": "newturn-red.png",
-        "targetPlatforms": [ "basalt" ]
+        "targetPlatforms": [ "basalt", "chalk" ]
       },
       {
         "menuIcon": true,

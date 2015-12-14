@@ -7,7 +7,7 @@ static TextLayer *time_text_layer;
 static TextLayer *up_help_text_layer;
 static TextLayer *click_help_text_layer;
 static TextLayer *down_help_text_layer;
-static GFont *netrunner_font;
+static GFont netrunner_font;
 static int click_count = 0;
 static ActionBarLayer *action_bar;
 static GBitmap *die_icon;
@@ -34,6 +34,7 @@ static void hide_help_text() {
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling SELECT click");
   static char buffer[2];
   int result = (rand() % 5) + 1;
   snprintf(buffer, sizeof(buffer), "%u", result);
@@ -42,6 +43,7 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling UP click");
   click_count = 0;
   corpTurn = !corpTurn;
   text_layer_set_text(rand_text_layer, "");
@@ -65,6 +67,7 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling DOWN click");
   static char click_buffer[32] = "";
   text_layer_set_text(rand_text_layer, "");
   int i;
@@ -87,12 +90,14 @@ static void click_config_provider(void *context) {
 }
 
 static void update_game_time() {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Updating game time");
   static char buffer[] = "000:00";
   unsigned int current_time = time(NULL);
   unsigned int seconds = (current_time - start_time) % 60;
   unsigned int minutes = (current_time - start_time - seconds) / 60;
   snprintf(buffer, sizeof(buffer), "%d:%02d", minutes, seconds);
   text_layer_set_text(time_text_layer, buffer);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Game time updated");
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits time_changed) {
@@ -104,11 +109,13 @@ static void window_load(Window *window) {
 
   // remove status bar on applite for consistent layout
   #ifdef PBL_SDK_2
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Adjusting window for SDK v2");
   window_set_fullscreen(window, true);
   layer_set_bounds(window_layer, GRect(0, 0, 144, 168));
   #endif
 
   netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Custom font loaded");
 
   // displays the click counter
   click_count_text_layer = text_layer_create((GRect) { .origin = { 3, 5 }, .size = { 110, 120 } });
@@ -118,6 +125,7 @@ static void window_load(Window *window) {
   text_layer_set_font(click_count_text_layer, netrunner_font);
   text_layer_set_overflow_mode(click_count_text_layer, GTextOverflowModeWordWrap);
   layer_add_child(window_layer, text_layer_get_layer(click_count_text_layer));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Click counter layer setup");
 
   // displays the "hand access" random numbers
   rand_text_layer = text_layer_create((GRect) { .origin = { 77, 125 }, .size = { 30, 30 } });
@@ -127,6 +135,7 @@ static void window_load(Window *window) {
   text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
   text_layer_set_text(rand_text_layer, "");
   layer_add_child(window_layer, text_layer_get_layer(rand_text_layer));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Random number layer setup");
 
   // displays the game time
   time_text_layer = text_layer_create((GRect) { .origin = { 10, 125 }, .size = { 70, 30 } });
@@ -136,6 +145,7 @@ static void window_load(Window *window) {
   text_layer_set_font(time_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
   text_layer_set_text(time_text_layer, "0:00");
   layer_add_child(window_layer, text_layer_get_layer(time_text_layer));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Game time layer setup");
 
   // actionbar shows user the available functionality
   action_bar = action_bar_layer_create();
@@ -148,9 +158,11 @@ static void window_load(Window *window) {
   action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
   action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Actionbar layer setup");
 
   // add coloured actionbar and icons with background colours
   #ifdef PBL_COLOR
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Setting up colours");
   window_set_background_color(window, GColorBabyBlueEyes);
   action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
   die_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_DIE_RED);
@@ -160,10 +172,12 @@ static void window_load(Window *window) {
 
   // line up help text with action bar on different platforms
   #ifdef PBL_SDK_2
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Lining up resources for SDK v2");
   up_help_text_layer = text_layer_create((GRect) { .origin = { 10, 17 }, .size = { 107, 30 } });
   click_help_text_layer = text_layer_create((GRect) { .origin = { 10, 70 }, .size = { 107, 30 } });
   down_help_text_layer = text_layer_create((GRect) { .origin = { 10, 124 }, .size = { 107, 30 } });
   #else
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Lining up resources for non-SDK v2");
   up_help_text_layer = text_layer_create((GRect) { .origin = { 10, 20 }, .size = { 98, 30 } });
   click_help_text_layer = text_layer_create((GRect) { .origin = { 10, 71 }, .size = { 98, 30 } });
   down_help_text_layer = text_layer_create((GRect) { .origin = { 10, 122 }, .size = { 98, 30 } });
@@ -176,6 +190,7 @@ static void window_load(Window *window) {
   text_layer_set_overflow_mode(up_help_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(up_help_text_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(up_help_text_layer));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Help text UP layer setup");
 
   text_layer_set_font(click_help_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
   text_layer_set_background_color(click_help_text_layer, GColorClear);
@@ -183,6 +198,7 @@ static void window_load(Window *window) {
   text_layer_set_overflow_mode(click_help_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(click_help_text_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(click_help_text_layer));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Help text SELECT layer setup");
 
   text_layer_set_font(down_help_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
   text_layer_set_background_color(down_help_text_layer, GColorClear);
@@ -190,12 +206,17 @@ static void window_load(Window *window) {
   text_layer_set_overflow_mode(down_help_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(down_help_text_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(down_help_text_layer));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Help text DOWN layer setup");
 }
 
 static void window_unload(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Unloading window");
+
   text_layer_destroy(rand_text_layer);
   text_layer_destroy(click_count_text_layer);
   fonts_unload_custom_font(netrunner_font);
+
+  APP_LOG(APP_LOG_LEVEL_INFO, "Window unloaded");
 }
 
 static void init(void) {
@@ -207,9 +228,11 @@ static void init(void) {
     .load = window_load,
     .unload = window_unload,
   });
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Window created: %p", window);
 
   // register tick handler
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "tick handler registered");
 
   const bool animated = true;
   window_stack_push(window, animated);
@@ -221,8 +244,7 @@ static void deinit(void) {
 
 int main(void) {
   init();
-
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", window);
+  APP_LOG(APP_LOG_LEVEL_INFO, "Done initializing, pushed window: %p", window);
 
   app_event_loop();
   deinit();

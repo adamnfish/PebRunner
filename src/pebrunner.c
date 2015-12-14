@@ -107,13 +107,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits time_changed) {
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
 
-  // remove status bar on applite for consistent layout
-  #ifdef PBL_SDK_2
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Adjusting window for SDK v2");
-  window_set_fullscreen(window, true);
-  layer_set_bounds(window_layer, GRect(0, 0, 144, 168));
-  #endif
-
   netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Custom font loaded");
 
@@ -128,9 +121,13 @@ static void window_load(Window *window) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Click counter layer setup");
 
   // displays the "hand access" random numbers
+  #ifdef PBL_ROUND
+  rand_text_layer = text_layer_create((GRect) { .origin = { 75, 75 }, .size = { 30, 30 } });
+  #else
   rand_text_layer = text_layer_create((GRect) { .origin = { 77, 125 }, .size = { 30, 30 } });
+  #endif
   text_layer_set_background_color(rand_text_layer, GColorClear);
-  text_layer_set_text_alignment(rand_text_layer, GTextAlignmentRight);
+  text_layer_set_text_alignment(rand_text_layer, GTextAlignmentCenter);
   text_layer_set_overflow_mode(rand_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_font(rand_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
   text_layer_set_text(rand_text_layer, "");
@@ -138,9 +135,13 @@ static void window_load(Window *window) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Random number layer setup");
 
   // displays the game time
-  time_text_layer = text_layer_create((GRect) { .origin = { 10, 125 }, .size = { 70, 30 } });
+  #ifdef PBL_ROUND
+  time_text_layer = text_layer_create((GRect) { .origin = { 50, 130 }, .size = { 80, 30 } });
+  #else
+  time_text_layer = text_layer_create((GRect) { .origin = { 0, 125 }, .size = { 70, 30 } });
+  #endif
   text_layer_set_background_color(time_text_layer, GColorClear);
-  text_layer_set_text_alignment(time_text_layer, GTextAlignmentLeft);
+  text_layer_set_text_alignment(time_text_layer, GTextAlignmentCenter);
   text_layer_set_overflow_mode(time_text_layer, GTextOverflowModeWordWrap);
   text_layer_set_font(time_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
   text_layer_set_text(time_text_layer, "0:00");
@@ -171,13 +172,13 @@ static void window_load(Window *window) {
   #endif
 
   // line up help text with action bar on different platforms
-  #ifdef PBL_SDK_2
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Lining up resources for SDK v2");
-  up_help_text_layer = text_layer_create((GRect) { .origin = { 10, 17 }, .size = { 107, 30 } });
-  click_help_text_layer = text_layer_create((GRect) { .origin = { 10, 70 }, .size = { 107, 30 } });
-  down_help_text_layer = text_layer_create((GRect) { .origin = { 10, 124 }, .size = { 107, 30 } });
+  #ifdef PBL_ROUND
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Lining up resources for Chalk");
+  up_help_text_layer = text_layer_create((GRect) { .origin = { 25, 47 }, .size = { 107, 30 } });
+  click_help_text_layer = text_layer_create((GRect) { .origin = { 25, 77 }, .size = { 107, 30 } });
+  down_help_text_layer = text_layer_create((GRect) { .origin = { 25, 107 }, .size = { 107, 30 } });
   #else
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Lining up resources for non-SDK v2");
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Lining up resources for rectangle screens");
   up_help_text_layer = text_layer_create((GRect) { .origin = { 10, 20 }, .size = { 98, 30 } });
   click_help_text_layer = text_layer_create((GRect) { .origin = { 10, 71 }, .size = { 98, 30 } });
   down_help_text_layer = text_layer_create((GRect) { .origin = { 10, 122 }, .size = { 98, 30 } });

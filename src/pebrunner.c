@@ -2,7 +2,6 @@
 
 static Window *window;
 static TextLayer *rand_text_layer;
-static TextLayer *click_count_text_layer;
 static TextLayer *time_text_layer;
 static TextLayer *up_help_text_layer;
 static TextLayer *click_help_text_layer;
@@ -10,16 +9,25 @@ static TextLayer *down_help_text_layer;
 static GFont netrunner_font;
 static int click_count = 0;
 static ActionBarLayer *action_bar;
-static GBitmap *die_icon;
-static GBitmap *click_icon;
-static GBitmap *new_turn_icon;
+static GBitmap *die_action_icon;
+static GBitmap *click_action_icon;
+static GBitmap *new_turn_action_icon;
 static bool corpTurn = true;
 static unsigned int start_time = 0;
 #ifdef PBL_COLOR
-static GBitmap *die_icon_runner;
-static GBitmap *click_icon_runner;
-static GBitmap *new_turn_icon_runner;
+static GBitmap *die_action_icon_runner;
+static GBitmap *click_action_icon_runner;
+static GBitmap *new_turn_action_icon_runner;
 #endif
+#ifdef PBL_ROUND
+static int max_clicks = 5;
+static BitmapLayer *click_icon_layers[5];
+#else
+static int max_clicks = 9;
+static BitmapLayer *click_icon_layers[9];
+#endif
+static GBitmap *click_icon;
+
 
 static void show_help_text() {
   layer_set_hidden((Layer *)up_help_text_layer, false);
@@ -31,6 +39,17 @@ static void hide_help_text() {
   layer_set_hidden((Layer *)up_help_text_layer, true);
   layer_set_hidden((Layer *)click_help_text_layer, true);
   layer_set_hidden((Layer *)down_help_text_layer, true);
+}
+
+static void hide_all_clicks() {
+  int i;
+  for (i = 0; i < max_clicks; i++) {
+    layer_set_hidden(bitmap_layer_get_layer(click_icon_layers[i]), true);
+  }
+}
+
+static void show_click(int i) {
+  layer_set_hidden(bitmap_layer_get_layer(click_icon_layers[i]), false);
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -47,40 +66,35 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   click_count = 0;
   corpTurn = !corpTurn;
   text_layer_set_text(rand_text_layer, "");
-  text_layer_set_text(click_count_text_layer, "");
+  hide_all_clicks();
   show_help_text();
   #ifdef PBL_COLOR
   if (corpTurn) {
     window_set_background_color(window, GColorBabyBlueEyes);
     action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
-    action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
-    action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
-    action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_action_icon);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_action_icon);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_action_icon);
   } else {
     window_set_background_color(window, GColorMelon);
     action_bar_layer_set_background_color(action_bar, GColorBulgarianRose);
-    action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon_runner);
-    action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon_runner);
-    action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon_runner);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_action_icon_runner);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_action_icon_runner);
+    action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_action_icon_runner);
   }
   #endif
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling DOWN click");
-  static char click_buffer[32] = "";
   text_layer_set_text(rand_text_layer, "");
-  int i;
-  click_buffer[0] = 0;
-  click_count++;
-  if (click_count > 9) {
-    click_count = 1;
-  }
-  for (i = 0; i < click_count; i++) {
-    strcat(click_buffer, "");
-  }
-  text_layer_set_text(click_count_text_layer, click_buffer);
   hide_help_text();
+  click_count++;
+  if (click_count > max_clicks) {
+    click_count = 1;
+    hide_all_clicks();
+  }
+  show_click(click_count - 1);
 }
 
 static void click_config_provider(void *context) {
@@ -107,18 +121,27 @@ static void tick_handler(struct tm *tick_time, TimeUnits time_changed) {
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
 
-  netrunner_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NETRUNNER_35));
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Custom font loaded");
-
-  // displays the click counter
-  click_count_text_layer = text_layer_create((GRect) { .origin = { 3, 5 }, .size = { 110, 120 } });
-  text_layer_set_background_color(click_count_text_layer, GColorClear);
-  text_layer_set_text(click_count_text_layer, "");
-  text_layer_set_text_alignment(click_count_text_layer, GTextAlignmentCenter);
-  text_layer_set_font(click_count_text_layer, netrunner_font);
-  text_layer_set_overflow_mode(click_count_text_layer, GTextOverflowModeWordWrap);
-  layer_add_child(window_layer, text_layer_get_layer(click_count_text_layer));
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Click counter layer setup");
+  click_icon = gbitmap_create_with_resource(RESOURCE_ID_CLICK);
+  int i;
+  for (i = 0; i < max_clicks; i++) {
+    #ifdef PBL_ROUND
+    click_icon_layers[i] = bitmap_layer_create(grect_centered_from_polar(
+      grect_crop(layer_get_bounds(window_layer), 25),
+      GOvalScaleModeFillCircle,
+      DEG_TO_TRIGANGLE(25 + (i * -35)),
+      (GSize) { .w = 36, .h = 36 })
+    );
+    #else
+    click_icon_layers[i] = bitmap_layer_create((GRect) { .origin = { 3 + (36 * (i % 3)), 7 + (36 * (i / 3)) }, .size = { 36, 36 } });
+    #endif
+    #ifdef PBL_COLOR
+    bitmap_layer_set_compositing_mode(click_icon_layers[i], GCompOpSet);
+    #endif
+    bitmap_layer_set_bitmap(click_icon_layers[i], click_icon);
+    layer_add_child(window_layer, bitmap_layer_get_layer(click_icon_layers[i]));
+  }
+  hide_all_clicks();
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Click counter layers setup");
 
   // displays the "hand access" random numbers
   #ifdef PBL_ROUND
@@ -153,12 +176,12 @@ static void window_load(Window *window) {
   action_bar_layer_add_to_window(action_bar, window);
   action_bar_layer_set_click_config_provider(action_bar,
 					     click_config_provider);
-  die_icon = gbitmap_create_with_resource(RESOURCE_ID_DIE);
-  click_icon = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON);
-  new_turn_icon = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN);
-  action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_icon);
-  action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_icon);
-  action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_icon);
+  die_action_icon = gbitmap_create_with_resource(RESOURCE_ID_DIE);
+  click_action_icon = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON);
+  new_turn_action_icon = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, new_turn_action_icon);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, die_action_icon);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, click_action_icon);
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Actionbar layer setup");
 
   // add coloured actionbar and icons with background colours
@@ -166,9 +189,9 @@ static void window_load(Window *window) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Setting up colours");
   window_set_background_color(window, GColorBabyBlueEyes);
   action_bar_layer_set_background_color(action_bar, GColorOxfordBlue);
-  die_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_DIE_RED);
-  click_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON_RED);
-  new_turn_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN_RED);
+  die_action_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_DIE_RED);
+  click_action_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_CLICKICON_RED);
+  new_turn_action_icon_runner = gbitmap_create_with_resource(RESOURCE_ID_NEWTURN_RED);
   #endif
 
   // line up help text with action bar on different platforms
@@ -214,7 +237,6 @@ static void window_unload(Window *window) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Unloading window");
 
   text_layer_destroy(rand_text_layer);
-  text_layer_destroy(click_count_text_layer);
   fonts_unload_custom_font(netrunner_font);
 
   APP_LOG(APP_LOG_LEVEL_INFO, "Window unloaded");

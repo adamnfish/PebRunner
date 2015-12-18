@@ -16,9 +16,9 @@
   "resources": {
     "media": [
       {
-        "type": "font",
-        "name": "NETRUNNER_35",
-        "file": "netrunner.ttf"
+        "type": "bitmap",
+        "name": "CLICK",
+        "file": "click.png"
       },
       {
         "type": "png",

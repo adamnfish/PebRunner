@@ -4,8 +4,8 @@ PebRunner
 PebRunner is an
 [Android: Netrunner](https://www.fantasyflightgames.com/en/products/android-netrunner-the-card-game/)
 assistant for your wrist! It features a click tracker, random number
-generator and round timer. It supports the original Pebble models as
-well as new Pebble Time models with colour screens.
+generator and round timer. It supports all Pebble models, including
+the new Pebble Round.
 
 ![PebRunner card](http://www.adamnfish.com/assets/images/posts/56/pebble-card.png)
 
@@ -18,7 +18,13 @@ app is purely for fun, hopefully you find it useful!
 * pressing the Down button will advance the Pebble app's click tracker
 * pressing Select will generate a random number between 1 and 5 (useful for randomising hand access)
 * pressing Up will start a new turn
-* a round timer is visible in the bottom right of the watch's screen
+* a round timer is visible at the bottom of the watch's screen
+
+### Pebble Round
+
+![New turn](screenshots/new-turn-corp-chalk.png) ![Click tracker](screenshots/clicks-corp-chalk.png) ![Random numbers](screenshots/random-corp-chalk.png)
+
+![New turn](screenshots/new-turn-runner-chalk.png) ![Click tracker](screenshots/clicks-runner-chalk.png) ![Random numbers](screenshots/random-runner-chalk.png)
 
 ### Pebble Time / Pebble Time Steel
 
@@ -39,6 +45,11 @@ files available in the Releases section of this repository. Alternatively
 you can install the app from source code using the SDK.
 
 ## Changelog
+
+### v0.6
+
+* Pebble Round (chalk) support
+* Pebble / Pebblt time (aplite) SDK v3 support
 
 ### v0.5
 
@@ -73,20 +84,21 @@ First version of the app!
 * psi-game number wizard
 * more flexible hand randomisation (not just 1-5)
 * faction icons (and colours for Pebble Time)
+* timing structure references
 
 ## Issues / contact
 
 If you find any problems or generally have any questions feel free to
 raise an issue on this repository. I'd love to hear if you've found it
-helpful. Pull Requests are welcome :-)
+helpful. Pull Requests are very welcome.
 
 ### Known issues
 
-It only supports 9 clicks at the moment (that's all that fit on
-screen). If you have a super-janky-combo deck that needs more than 9
-clicks in a turn then good for you captain jank, but I can't help! If
-you continue past 9 it'll start from 1 again so you'll still be able
-to use PebRunner to help.
+It only supports 9 clicks (5 on round Pebbles) at the moment (that's
+all that fit on screen). If you have a super-janky-combo deck that
+needs more than 9 clicks in a turn then good for you captain jank, but
+I can't help! If you continue past 9 (/5) it'll start from 1 again so
+you'll still be able to use PebRunner to help.
 
 Random numbers are currently chosen from 1-5 and there's currently no
 way to change this.
@@ -99,5 +111,5 @@ for creating the superb game of Android: Netrunner.
 
 Thanks also to [MWDelaney](https://github.com/MWDelaney) for creating
 the
-[Netrunner ttf font](https://github.com/MWDelaney/Netrunner-Icon-Font)
-used in this Pebble app.
+[Netrunner ttf font](https://github.com/MWDelaney/Netrunner-Icon-Font),
+used to generate the icons in this app.

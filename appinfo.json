@@ -29,7 +29,7 @@
         "type": "png",
         "name": "DIE_RED",
         "file": "die-red.png",
-          "targetPlatforms": [ "basalt", "chalk" ]
+        "targetPlatforms": [ "basalt", "chalk" ]
       },
       {
         "type": "png",

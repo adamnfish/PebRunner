@@ -27,6 +27,7 @@ static int max_clicks = 9;
 static BitmapLayer *click_icon_layers[9];
 #endif
 static GBitmap *click_icon;
+static int rng_max = 59;
 
 
 static void show_help_text() {
@@ -54,8 +55,8 @@ static void show_click(int i) {
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling SELECT click");
-  static char buffer[2];
-  int result = (rand() % 5) + 1;
+  static char buffer[3];
+  int result = (rand() % rng_max) + 1;
   snprintf(buffer, sizeof(buffer), "%u", result);
   text_layer_set_text(rand_text_layer, buffer);
   hide_help_text();

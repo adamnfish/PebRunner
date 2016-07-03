@@ -7,13 +7,11 @@ static TextLayer *up_help_text_layer;
 static TextLayer *click_help_text_layer;
 static TextLayer *down_help_text_layer;
 static GFont netrunner_font;
-static int click_count = 0;
 static ActionBarLayer *action_bar;
 static GBitmap *die_action_icon;
 static GBitmap *click_action_icon;
 static GBitmap *new_turn_action_icon;
-static bool corpTurn = true;
-static unsigned int start_time = 0;
+static GBitmap *click_icon;
 #ifdef PBL_COLOR
 static GBitmap *die_action_icon_runner;
 static GBitmap *click_action_icon_runner;
@@ -26,7 +24,9 @@ static BitmapLayer *click_icon_layers[5];
 static int max_clicks = 9;
 static BitmapLayer *click_icon_layers[9];
 #endif
-static GBitmap *click_icon;
+static bool corpTurn = true;
+static unsigned int start_time = 0;
+static int click_count = 0;
 
 
 static void show_help_text() {
@@ -52,7 +52,7 @@ static void show_click(int i) {
   layer_set_hidden(bitmap_layer_get_layer(click_icon_layers[i]), false);
 }
 
-static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+static void show_rng() {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling SELECT click");
   static char buffer[2];
   int result = (rand() % 5) + 1;
@@ -61,8 +61,8 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   hide_help_text();
 }
 
-static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling UP click");
+static void new_turn() {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "New turn");
   click_count = 0;
   corpTurn = !corpTurn;
   text_layer_set_text(rand_text_layer, "");
@@ -85,7 +85,7 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   #endif
 }
 
-static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
+static void count_click() {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Handling DOWN click");
   text_layer_set_text(rand_text_layer, "");
   hide_help_text();
@@ -95,6 +95,18 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
     hide_all_clicks();
   }
   show_click(click_count - 1);
+}
+
+static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  show_rng();
+}
+
+static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  new_turn();
+}
+
+static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
+  count_click();
 }
 
 static void click_config_provider(void *context) {

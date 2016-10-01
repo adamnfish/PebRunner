@@ -5,3 +5,5 @@ build
 
 # emacs
 *~
+
+node_modules/

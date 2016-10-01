@@ -1,0 +1,89 @@
+{
+  "version": "0.7.0",
+  "name": "PebRunner",
+  "author": "adamnfish",
+  "private": true,
+  "dependencies": {},
+  "keywords": [
+    "pebble-app"
+  ],
+  "pebble": {
+    "sdkVersion": "3",
+    "displayName": "PebRunner",
+    "resources": {
+      "media": [
+        {
+          "menuIcon": true,
+          "type": "png",
+          "name": "IMAGE_MENU_ICON",
+          "file": "menu-icon.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "CLICK",
+          "file": "click.png"
+        },
+        {
+          "type": "png",
+          "name": "DIE",
+          "file": "die.png"
+        },
+        {
+          "targetPlatforms": [
+            "basalt",
+            "chalk"
+          ],
+          "type": "png",
+          "name": "DIE_RED",
+          "file": "die-red.png"
+        },
+        {
+          "type": "png",
+          "name": "CLICKICON",
+          "file": "clickicon.png"
+        },
+        {
+          "targetPlatforms": [
+            "basalt",
+            "chalk"
+          ],
+          "type": "png",
+          "name": "CLICKICON_RED",
+          "file": "clickicon-red.png"
+        },
+        {
+          "type": "png",
+          "name": "NEWTURN",
+          "file": "newturn.png"
+        },
+        {
+          "targetPlatforms": [
+            "basalt",
+            "chalk"
+          ],
+          "type": "png",
+          "name": "NEWTURN_RED",
+          "file": "newturn-red.png"
+        }
+      ]
+    },
+    "projectType": "native",
+    "uuid": "173ac167-49df-43e5-90c0-d8b07ed1564b",
+    "messageKeys": {
+      "dummy": 0
+    },
+    "enableMultiJS": false,
+    "watchapp": {
+      "onlyShownOnCommunication": false,
+      "hiddenApp": false,
+      "watchface": false
+    },
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite"
+    ],
+    "capabilities": []
+  }
+}

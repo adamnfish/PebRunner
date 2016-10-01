@@ -5,7 +5,7 @@ PebRunner is an
 [Android: Netrunner](https://www.fantasyflightgames.com/en/products/android-netrunner-the-card-game/)
 assistant for your wrist! It features a click tracker, random number
 generator and round timer. It supports all Pebble models, including
-the new Pebble Round.
+the Pebble Round and the new Pebble 2.
 
 ![PebRunner card](http://www.adamnfish.com/assets/images/posts/56/pebble-card.png)
 
@@ -32,7 +32,7 @@ app is purely for fun, hopefully you find it useful!
 
 ![New turn](screenshots/new-turn-runner.png) ![Click tracker](screenshots/clicks-runner.png) ![Random numbers](screenshots/random-runner.png)
 
-### Pebble / Pebble Steel
+### Pebble 2 / Pebble / Pebble Steel
 
 ![New turn](screenshots/new-turn.png) ![Click tracker](screenshots/clicks.png) ![Random numbers](screenshots/random.png)
 
@@ -45,6 +45,13 @@ files available in the Releases section of this repository. Alternatively
 you can install the app from source code using the SDK.
 
 ## Changelog
+
+### v0.7
+
+* Pebble 2 (diorite) support
+* Built for SDK v4
+* Updated menu icon
+* Improves display name
 
 ### v0.6
 
